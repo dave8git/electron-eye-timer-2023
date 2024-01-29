@@ -4,7 +4,7 @@ const db = require('./../db');
 const { v4: uuidv4 } = require('uuid');
 
 router.route('/testimonials').get((req, res) => {
-    res.send(db.testimonials.testimonials);
+    res.send(db.testimonials);
 });
 
 

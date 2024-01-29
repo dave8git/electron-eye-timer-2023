@@ -4,8 +4,8 @@ const { v4: uuidv4 } = require('uuid');
 const db = require('./db.js');
 
 // import routes
-const concertsRoutes = require('./routes/concerts.routes');
-const seatsRoutes = require('./routes/seats.routes');
+const concertsRoutes = require('./routes/concerts.routes.js');
+const seatsRoutes = require('./routes/seats.routes.js');
 const testimonialsRoutes = require('./routes/testimonials.routes.js');
 
 const app = express();
