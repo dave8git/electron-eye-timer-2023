@@ -11,34 +11,34 @@ router.route('/seats').get((req, res) => {
 router.route('/seats/random').get((req, res) => {
   const randomIndex = Math.floor(Math.random() * db.seats.length); 
   console.log(randomIndex);
-  const randomTestimonial = db.seats[randomIndex];
-  console.log(randomTestimonial);
-  res.status(200).json(randomTestimonial);
+  const randomSeat = db.seats[randomIndex];
+  res.status(200).json(randomSeat);
 });
 
 router.route('/seats/:id').get((req, res) => {
-  const testimonialId = parseInt(req.params.id);
-  console.log(testimonialId);
+  const seatId = parseInt(req.params.id);
 
-  const seats = db.seats.find((testimonial) => testimonial.id === testimonialId);
+  const seats = db.seats.find((seat) => seat.id === seatId);
 
   if(seats) {
     res.status(200).json(seats);
   } else {
-    res.status(404).json({message: 'Testimonial not found'});
+    res.status(404).json({message: 'Seat not found'});
   }
 });
  
 router.route('/seats').post((req, res)  => {
-  const { author, text } = req.body;
+  const { day, seat, client, email } = req.body;
 
-  const newTestimonial = {
+  const newSeat = {
     id: uuidv4(),
-    author, 
-    text
+    day, 
+    seat,
+    client, 
+    email
   };
 
-  db.seats.push(newTestimonial);
+  db.seats.push(newSeat);
 
   console.log(db.seats);
 
@@ -46,43 +46,42 @@ router.route('/seats').post((req, res)  => {
 });
 
 router.route('/seats/:id').put((req, res) => {
-  const testimonialId = parseInt(req.params.id);
+  const seatId = parseInt(req.params.id);
 
-  const { author, text } = req.body;
+  const { day, seat, client, email } = req.body;
 
-  console.log('author', author);
-  console.log('text', text);
-  const testimonial = db.seats.find((testimonial) => testimonial.id === testimonialId)
+
+  const seatSelected = db.seats.find((seat) => seat.id === seatId)
 
  
 
-  if(testimonial) {
-    const testimonialIndex = db.seats.indexOf(testimonial);
-    console.log(testimonialIndex);
-    console.log(db.seats);
+  if(seatSelected) {
+    const seatIndex = db.seats.indexOf(seatSelected);
   
-    db.seats[testimonialIndex].author = author;  
-    db.seats[testimonialIndex].text = text;
+    db.seats[seatIndex].day = day;  
+    db.seats[seatIndex].seat = seat;
+    db.seats[seatIndex].client = client; 
+    db.seats[seatIndex].email = email;
 
-    res.status(200).json(testimonial);
+    res.status(200).json(seatSelected);
   } else {
-    res.status(404).json({message: 'Testimonial not found'});
+    res.status(404).json({message: 'Seat not found'});
   }
 });
 
 router.route('/seats/:id').delete((req, res) => {
-  const testimonialId = parseInt(req.params.id);
+  const seatId = parseInt(req.params.id);
   // const newseatsArray = db.seats.filter(testimonial => testimonial.id !== testimonialId);
 
-  const testimonial = db.seats.find((testimonial) => testimonial.id === testimonialId);
+  const seat = db.seats.find((seat) => seat.id === seatId);
 
-  if(testimonialId) {
-    const testimonialIndex = db.seats.indexOf(testimonial);
-    res.status(200).json(testimonial);
-    db.seats.splice(testimonialIndex, 1);
+  if(seatId) {
+    const seatIndex = db.seats.indexOf(seat);
+    res.status(200).json(seat);
+    db.seats.splice(seatIndex, 1);
     console.log(db.seats);
   } else {
-    res.status(404).json({message: 'Testimonial not found'});
+    res.status(404).json({message: 'Seat not found'});
   }
 });
 

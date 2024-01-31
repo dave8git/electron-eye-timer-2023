@@ -10,35 +10,37 @@ router.route('/concerts').get((req, res) => {
 
 router.route('/concerts/random').get((req, res) => {
   const randomIndex = Math.floor(Math.random() * db.concerts.length); 
-  console.log(randomIndex);
-  const randomTestimonial = db.concerts[randomIndex];
-  console.log(randomTestimonial);
-  res.status(200).json(randomTestimonial);
+  const randomConcert = db.concerts[randomIndex];
+  console.log(randomConcert);
+  res.status(200).json(randomConcert);
 });
 
 router.route('/concerts/:id').get((req, res) => {
-  const testimonialId = parseInt(req.params.id);
-  console.log(testimonialId);
+  const concertId = parseInt(req.params.id);
+  console.log(concertId);
 
-  const concerts = db.concerts.find((testimonial) => testimonial.id === testimonialId);
+  const concerts = db.concerts.find((concert) => concert.id === concertId);
 
   if(concerts) {
     res.status(200).json(concerts);
   } else {
-    res.status(404).json({message: 'Testimonial not found'});
+    res.status(404).json({message: 'Concert not found'});
   }
 });
  
 router.route('/concerts').post((req, res)  => {
-  const { author, text } = req.body;
+  const { performer, genre, price, day, image } = req.body;
 
-  const newTestimonial = {
+  const newConcert = {
     id: uuidv4(),
-    author, 
-    text
+    performer, 
+    genre,
+    price,
+    day,
+    image
   };
 
-  db.concerts.push(newTestimonial);
+  db.concerts.push(newConcert);
 
   console.log(db.concerts);
 
@@ -46,43 +48,46 @@ router.route('/concerts').post((req, res)  => {
 });
 
 router.route('/concerts/:id').put((req, res) => {
-  const testimonialId = parseInt(req.params.id);
+  const concertId = parseInt(req.params.id);
 
-  const { author, text } = req.body;
+  const { performer, genre, price, day, image } = req.body;
 
   console.log('author', author);
   console.log('text', text);
-  const testimonial = db.concerts.find((testimonial) => testimonial.id === testimonialId)
+  const concert = db.concerts.find((concert) => concert.id === concertId)
 
  
 
-  if(testimonial) {
-    const testimonialIndex = db.concerts.indexOf(testimonial);
-    console.log(testimonialIndex);
+  if(concert) {
+    const concertIndex = db.concerts.indexOf(concert);
+    console.log(concertIndex);
     console.log(db.concerts);
   
-    db.concerts[testimonialIndex].author = author;  
-    db.concerts[testimonialIndex].text = text;
+    db.concerts[concertIndex].performer = performer;  
+    db.concerts[concertIndex].genre = genre;
+    db.concerts[concertIndex].price = price; 
+    db.concerts[concertIndex].day = day; 
+    db.concerts[concertIndex].image = image; 
 
-    res.status(200).json(testimonial);
+    res.status(200).json(concert);
   } else {
-    res.status(404).json({message: 'Testimonial not found'});
+    res.status(404).json({message: 'Concert not found'});
   }
 });
 
 router.route('/concerts/:id').delete((req, res) => {
-  const testimonialId = parseInt(req.params.id);
+  const concertId = parseInt(req.params.id);
   // const newconcertsArray = db.concerts.filter(testimonial => testimonial.id !== testimonialId);
 
-  const testimonial = db.concerts.find((testimonial) => testimonial.id === testimonialId);
+  const concertFound = db.concerts.find((concert) => concert.id === concertId);
 
-  if(testimonialId) {
-    const testimonialIndex = db.concerts.indexOf(testimonial);
-    res.status(200).json(testimonial);
-    db.concerts.splice(testimonialIndex, 1);
+  if(concertId) {
+    const concertIndex = db.concerts.indexOf(concertFound);
+    res.status(200).json(concert);
+    db.concerts.splice(concertIndex, 1);
     console.log(db.concerts);
   } else {
-    res.status(404).json({message: 'Testimonial not found'});
+    res.status(404).json({message: 'Concert not found'});
   }
 });
 
